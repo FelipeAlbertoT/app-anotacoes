@@ -10,16 +10,35 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var textAnotacao: UITextView!
+    let chave = "anotacao"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        textAnotacao.text = recuperarAnotacao()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
-
-
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
+    func recuperarAnotacao() -> String {
+        if let anotacaoSalva = UserDefaults.standard.object(forKey: chave) {
+            return anotacaoSalva as! String
+        }
+        
+        return ""
+    }
+    
+    @IBAction func salvarAnotacao(_ sender: Any) {
+        if let anotacao = textAnotacao.text {
+            UserDefaults.standard.set(anotacao, forKey: chave)
+        }
+    }
+    
 }
 
